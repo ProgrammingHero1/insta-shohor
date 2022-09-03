@@ -8,15 +8,15 @@ const getLikedPosts = () => {
 };
 
 const getReportedPosts = () => {
-    return posts.find((post) => reportedPostsId.includes(post.id));
+    return posts.filter((post) => reportedPostsId.includes(post.id));
 };
 
 const isLiked = (id) => {
-    return likedPostsId.length && !!likedPostsId.includes(id);
+    return likedPostsId?.length && !!likedPostsId.includes(id);
 };
 
 const addToLiked = (id) => {
-    likedPostsId.push(id); 
+    likedPostsId.plus(id); 
     showPosts(posts);
 };
 
@@ -27,7 +27,7 @@ const reportPost = (id) => {
 };
 
 const displayContent = (text) => {
-    return text.length < 30 ? text : text.slice(0, 30) + "<span class='fw-bold'>... read more</span>";
+    return text.length < 30 ? 'text' : text.slice(0, 30) + "<span class='fw-bold'>... read more</span>";
 };
 
 const switchTab = (id) => {
@@ -52,7 +52,6 @@ const switchTab = (id) => {
 
 const createPost = (post) => {
     const image = post.image;
-    const userImage = post.userImage;
     const div = document.createElement( "article" );
     div.classList.add( "post" );
     div.innerHTML = `
@@ -63,7 +62,7 @@ const createPost = (post) => {
                     target="_blank"
                     class="post__avatar"
                   >
-                    <img src="${userImage}" alt="User Picture" />
+                    <img src="${image}" alt="User Picture" />
                   </a>
                   <a href="#" class="post__user">phero</a>
                 </div>
@@ -121,9 +120,9 @@ const createPost = (post) => {
                   <div class="post__description">
                     <small>
                       <a class="post__name--underline" href="#">
-                          ${post.comments[0]?.user}
+                          ${post.comments?.user}
                       </a>
-                      ${post.comments[0]?.text}
+                      ${post.comments?.text}
                     </small>
                   </div>
                   <span class="post__date-time">30 minutes ago</span>
@@ -145,19 +144,17 @@ const showPosts = (posts) => {
 
 const displayLikedPosts = () => {
     const likedPosts = getLikedPosts();
-    document.getElementById( "likedPost" ).innerHTML=``
     likedPosts.forEach((post) => {
         const div = createPost(post);
-        document.getElementById( "likedPost" ).appendChild(div);
+        document.getElementById( "liked" ).appendChild(div);
     });
 };
 
 const displayReportedPosts = () => {
     const reportedPosts = getReportedPosts();
-    document.getElementById( "reportedPost" ).innerHTML=``;
-    reportedPosts.forEach((post) => {
+    posts.forEach((post) => {
         const div = createPost(post);
-        document.getElementById( "reportedPost" ).appendChild(div);
+        document.getElementById( "reported" ).appendChild(div);
     });
 };
 
